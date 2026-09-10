@@ -22,8 +22,8 @@ SCORING_YEAR = 2017    # the year we judge
 TEMP_KNOTS_C = [5, 10, 15, 20, 25, 30]
 WEATHER_FFILL_LIMIT_HOURS = 6   # carry a temperature forward over empty gaps up to this long
 RIDGE_ALPHA = 0.01              # tiny penalty, only for numerical stability
-GBM_PARAMS = dict(max_iter=300, learning_rate=0.05, max_leaf_nodes=31,
-                  min_samples_leaf=20, random_state=0)
+GBM_PARAMS = dict(max_iter=300, learning_rate=0.05, max_leaf_nodes=8,
+                  min_samples_leaf=200, random_state=0)
 
 # --- Gates -------------------------------------------------------------------
 # Measured against the real dataset: 88 of the 1,578 electricity buildings fall

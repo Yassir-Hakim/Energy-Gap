@@ -192,11 +192,11 @@ def build_model_frame(readings, weather, year=None):
 
     df = pd.DataFrame({
         "ts": full,
-        "kwh": r["kwh"].to_numpy(),
-        "air_temp": w["air_temp"].to_numpy(),
-        "dew_temp": w["dew_temp"].to_numpy(),
-        "cloud_cover": w["cloud_cover"].to_numpy(),
-        "wind_speed": w["wind_speed"].to_numpy(),
+        "kwh": pd.to_numeric(r["kwh"], errors="coerce").to_numpy(dtype=float),
+        "air_temp": pd.to_numeric(w["air_temp"], errors="coerce").to_numpy(dtype=float),
+        "dew_temp": pd.to_numeric(w["dew_temp"], errors="coerce").to_numpy(dtype=float),
+        "cloud_cover": pd.to_numeric(w["cloud_cover"], errors="coerce").to_numpy(dtype=float),
+        "wind_speed": pd.to_numeric(w["wind_speed"], errors="coerce").to_numpy(dtype=float),
     })
 
     # Step 2: short weather gaps only. Meter readings are never filled.

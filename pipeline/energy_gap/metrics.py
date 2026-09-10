@@ -32,9 +32,8 @@ def r2(y, yhat):
     ss_tot = np.sum((y - np.mean(y)) ** 2)
     return 1.0 - ss_res / ss_tot
 
-
 def resid_stats(y, yhat):
-    """Residual spread and stickiness, for the gap uncertainty in section 5.6.
+    """Residual spread and stickiness, for the gap uncertainty.
 
     Returns (sigma, rho): the standard deviation of the residuals, and their
     lag-1 autocorrelation. rho measures how much each hour's error resembles
@@ -43,5 +42,10 @@ def resid_stats(y, yhat):
     y, yhat = np.asarray(y, float), np.asarray(yhat, float)
     resid = y - yhat
     sigma = float(np.std(resid, ddof=1))
-    rho = float(np.corrcoef(resid[:-1], resid[1:])[0, 1])
-    return sigma, rho
+
+    if len(resid) < 3 or np.std(resid) == 0:
+        return sigma, 0.0
+
+    with np.errstate(invalid="ignore", divide="ignore"):
+        rho = float(np.corrcoef(resid[:-1], resid[1:])[0, 1])
+    return sigma, (0.0 if not np.isfinite(rho) else rho)

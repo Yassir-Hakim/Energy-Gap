@@ -79,15 +79,19 @@ def execute(sql, params=None):
     return rows
 
 
-def query_df(sql):
+def query_df(sql, params=None):
     """Run a query and return the result as a DataFrame.
 
     Built from a plain cursor rather than pandas.read_sql, which prints a
     warning on every call that it only officially supports SQLAlchemy
     connections.
+
+    Pass values through `params` with %s placeholders, never by building the
+    string yourself. The driver escapes them; string formatting does not, which
+    is what SQL injection is.
     """
     with get_conn() as conn:
         with conn.cursor() as cur:
-            cur.execute(sql)
+            cur.execute(sql, params)
             cols = [d[0] for d in cur.description]
             return pd.DataFrame(cur.fetchall(), columns=cols)
